@@ -30,6 +30,7 @@ object App {
             ).process(Paths.get(from), Paths.get(to))
         } catch (e: Exception) {
             LOGGER.error("Exception occurred", e)
+            Runtime.getRuntime().exit(1)
         }
     }
 
