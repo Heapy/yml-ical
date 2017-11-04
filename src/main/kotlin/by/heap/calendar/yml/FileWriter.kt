@@ -22,6 +22,13 @@ interface FileWriter {
  */
 class DefaultFileWriter : FileWriter {
     override fun write(path: Path, data: String) {
+        // create parent directories
+        path.parent.also { parent ->
+            if (!Files.exists(parent)) {
+                Files.createDirectories(parent)
+            }
+        }
+
         Files.write(
             path,
             data.toByteArray(charset = Charsets.UTF_8),
