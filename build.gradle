@@ -24,6 +24,10 @@ repositories {
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     compile("org.slf4j:slf4j-simple:$slf4jVersion")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+    compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion")
     compile("net.sf.biweekly:biweekly:$biweeklyVersion")
 
     testCompile("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
