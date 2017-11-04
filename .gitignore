@@ -6,3 +6,6 @@ out
 # Idea
 .idea
 *.iml
+
+# Publish
+publish.sh

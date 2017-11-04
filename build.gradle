@@ -26,8 +26,101 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
-kotlin {
-    experimental {
-        coroutines "enable"
+kotlin.experimental.coroutines "enable"
+
+apply plugin: "maven"
+apply plugin: "maven-publish"
+apply plugin: "org.jetbrains.dokka"
+apply plugin: "com.jfrog.bintray"
+
+def projectUrl = "https://github.com/Heapy/yml-ical"
+
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
     }
+    developers {
+        developer {
+            id "irus"
+            name "Ruslan Ibragimov"
+            organization "Heapy"
+            organizationUrl "https://github.com/Heapy"
+        }
+    }
+
+    scm {
+        url projectUrl
+    }
+}
+
+dokka {
+    outputFormat = "html"
+    outputDirectory = javadoc.destinationDir
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    outputDirectory = "$buildDir/javadoc"
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier = "javadoc"
+    from "$buildDir/javadoc"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            artifact javadocJar
+            artifact sourcesJar
+
+            groupId group
+            artifactId project.name
+            version version
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode("name", project.name)
+                root.appendNode("description", "Generate iCalendar from Yaml.")
+                root.appendNode("url", projectUrl)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv("BINTRAY_USER")
+    key =  System.getenv("BINTRAY_API_KEY")
+    publications = ["maven"]
+    pkg {
+        userOrg = "heapy"
+        repo = "heap"
+        name = project.name
+
+        licenses = ["Apache-2.0"]
+        vcsUrl = projectUrl
+
+        version {
+            name = project.version
+            vcsTag = project.version
+            released = new Date()
+        }
+    }
+}
+
+bintrayUpload.doLast {
+    println("Uploaded ${project.name} version ${project.version}.")
 }
