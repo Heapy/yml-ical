@@ -1,6 +1,5 @@
 package by.heap.calendar.yml
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import java.nio.file.Path
 import kotlin.reflect.KClass
 
@@ -18,9 +17,9 @@ interface YamlReader {
  * [YamlReader]
  */
 class DefaultYamlReader(
-    private val objectMapper: ObjectMapper
+    private val objectMapperProvider: ObjectMapperProvider
 ) : YamlReader {
     override fun <T : Any> read(path: Path, klass: KClass<T>): T {
-        return objectMapper.readValue(path.toFile(), klass.java)
+        return objectMapperProvider.get().readValue(path.toFile(), klass.java)
     }
 }

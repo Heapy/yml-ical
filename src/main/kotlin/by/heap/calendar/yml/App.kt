@@ -1,9 +1,5 @@
 package by.heap.calendar.yml
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.nio.file.Paths
 
 /**
@@ -19,13 +15,9 @@ object App {
             val from = args.getOrNull(0) ?: throw RuntimeException("From folder required.")
             val to = args.getOrNull(1) ?: throw RuntimeException("Destination file required.")
 
-            val objectMapper: ObjectMapper = ObjectMapper(YAMLFactory())
-                .registerModule(KotlinModule())
-                .registerModule(JavaTimeModule())
-
             YamlToCalendar(
                 folderReader = DefaultFolderReader(),
-                yamlReader = DefaultYamlReader(objectMapper),
+                yamlReader = DefaultYamlReader(DefaultObjectMapperProvider()),
                 fileWriter = DefaultFileWriter()
             ).process(Paths.get(from), Paths.get(to))
         } catch (e: Exception) {
