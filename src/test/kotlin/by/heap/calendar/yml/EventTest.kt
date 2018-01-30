@@ -1,10 +1,9 @@
 package by.heap.calendar.yml
 
-import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.function.Executable
+import org.junit.jupiter.api.assertAll
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
@@ -25,8 +24,8 @@ class EventTest {
 
         val config = yamlReader.read(Paths.get("./events/config.yml"), CalendarConfig::class)
         assertAll(
-            Executable { assertEquals("Event Test Data", config.name) },
-            Executable { assertEquals("https://heap.by/", config.url) }
+            { assertEquals("Event Test Data", config.name) },
+            { assertEquals("https://heap.by/", config.url) }
         )
     }
 
@@ -55,17 +54,17 @@ class EventTest {
             zone
         )
         assertAll(
-            Executable { assertEquals("Test Event 0", event0.name) },
-            Executable { assertEquals("Test Event 0 Description", event0.description) },
-            Executable { assertEquals("Test Event 0 Location", event0.location) },
-            Executable { assertTrue(event0Start.isEqual(event0.start)) },
-            Executable { assertTrue(event0End.isEqual(event0.end)) },
+            { assertEquals("Test Event 0", event0.name) },
+            { assertEquals("Test Event 0 Description", event0.description) },
+            { assertEquals("Test Event 0 Location", event0.location) },
+            { assertTrue(event0Start.isEqual(event0.start)) },
+            { assertTrue(event0End.isEqual(event0.end)) },
 
-            Executable { assertEquals("Test Event 1", event1.name) },
-            Executable { assertEquals("Test Event 1 Description", event1.description) },
-            Executable { assertEquals("Test Event 1 Location", event1.location) },
-            Executable { assertTrue(event1Start.isEqual(event1.start)) },
-            Executable { assertTrue(event1End.isEqual(event1.end)) }
+            { assertEquals("Test Event 1", event1.name) },
+            { assertEquals("Test Event 1 Description", event1.description) },
+            { assertEquals("Test Event 1 Location", event1.location) },
+            { assertTrue(event1Start.isEqual(event1.start)) },
+            { assertTrue(event1End.isEqual(event1.end)) }
         )
     }
 }
